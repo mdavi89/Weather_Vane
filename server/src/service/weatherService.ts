@@ -3,24 +3,46 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // TODO: Define an interface for the Coordinates object
+interface Coordinates {
+  lat: number;
+  lon: number;
+}
 
 
 // TODO: Define a class for the Weather object
+
 
 // TODO: Complete the WeatherService class
 class WeatherService {
   // TODO: Define the baseURL, API key, and city name properties
   private baseURL?: string;
   private apiKey?: string;
+  cityName?: string;
 
   constructor() {
     this.baseURL = process.env.API_BASE_URL || '';
     this.apiKey = process.env.API_KEY || '';
   }
   // TODO: Create fetchLocationData method
-  // private async fetchLocationData(query: string) {}
+  private async fetchLocationData(query: string) {
+    try {
+      const response = await fetch(
+        `${this.baseURL}/geo/1.0/direct?q=${query}&appid=${this.apiKey}`
+      );
+      const cities = await response.json();
+
+      const mappedCities = await this.destructureLocationData(cities.locationData);
+      return mappedCities;
+    } catch (err) {
+      console.log('Error:', err);
+      return err;
+    }
+  }
   // TODO: Create destructureLocationData method
-  // private destructureLocationData(locationData: Coordinates): Coordinates {}
+  private destructureLocationData(locationData: Coordinates): Coordinates {
+    const { lat, lon } = locationData;
+    return { lat, lon };
+  }
   // TODO: Create buildGeocodeQuery method
   // private buildGeocodeQuery(): string {}
   // TODO: Create buildWeatherQuery method
