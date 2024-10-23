@@ -84,7 +84,11 @@ class WeatherService {
     }
   }
   // TODO: Build parseCurrentWeather method
-  // private parseCurrentWeather(response: any) {}
+  private parseCurrentWeather(response: any) {
+    let weather = response;
+    let currentWeather = {temp: weather.list.main.temp, wind_speed: weather.list.wind.speed, humidity: weather.list.main.humidity};
+    return currentWeather;
+  }
   // TODO: Complete buildForecastArray method
   // private buildForecastArray(currentWeather: Weather, weatherData: any[]) {}
   // TODO: Complete getWeatherForCity method
