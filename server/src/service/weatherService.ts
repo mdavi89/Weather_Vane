@@ -90,7 +90,12 @@ class WeatherService {
   }
   // TODO: Build parseCurrentWeather method
   private parseCurrentWeather(response: any) {
-    let currentWeather = new Weather (response.main.temp, response.wind.speed, response.main.humidity,response.weather[0].icon, response.dt_txt);
+    let currentWeather = new Weather (
+      response.main.temp, 
+      response.wind.speed, 
+      response.main.humidity,
+      response.weather[0].icon, 
+      response.dt_txt);
     return currentWeather;
   }
   // TODO: Complete buildForecastArray method
