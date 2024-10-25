@@ -30,6 +30,7 @@ const humidityEl: HTMLParagraphElement = document.getElementById(
 
 /*
 
+
 API Calls
 
 */
@@ -44,7 +45,6 @@ const fetchWeather = async (cityName: string) => {
   });
 
   const weatherData = await response.json();
-
   console.log('weatherData: ', weatherData);
 
   renderCurrentWeather(weatherData[0]);
@@ -77,20 +77,20 @@ Render Functions
 */
 
 const renderCurrentWeather = (currentWeather: any): void => {
-  const { city, date, icon, iconDescription, tempF, windSpeed, humidity } =
+  console.log(currentWeather);
+  const { temp, wind_speed, humidity, icon, dt_txt } =
     currentWeather;
 
   // convert the following to typescript
-  heading.textContent = `${city} (${date})`;
+  heading.textContent = `(${dt_txt})`;
   weatherIcon.setAttribute(
     'src',
     `https://openweathermap.org/img/w/${icon}.png`
   );
-  weatherIcon.setAttribute('alt', iconDescription);
   weatherIcon.setAttribute('class', 'weather-img');
   heading.append(weatherIcon);
-  tempEl.textContent = `Temp: ${tempF}°F`;
-  windEl.textContent = `Wind: ${windSpeed} MPH`;
+  tempEl.textContent = `Temp: ${temp}°F`;
+  windEl.textContent = `Wind: ${wind_speed} MPH`;
   humidityEl.textContent = `Humidity: ${humidity} %`;
 
   if (todayContainer) {
@@ -113,25 +113,25 @@ const renderForecast = (forecast: any): void => {
   }
 
   for (let i = 0; i < forecast.length; i++) {
-    renderForecastCard(forecast[i]);
+    if (forecast[i].dt_txt.includes('00:00:00')){
+    renderForecastCard(forecast[i]);}
   }
 };
 
 const renderForecastCard = (forecast: any) => {
-  const { date, icon, iconDescription, tempF, windSpeed, humidity } = forecast;
+  const { temp, wind_speed, humidity, icon, dt_txt } = forecast;
 
   const { col, cardTitle, weatherIcon, tempEl, windEl, humidityEl } =
     createForecastCard();
 
   // Add content to elements
-  cardTitle.textContent = date;
+  cardTitle.textContent = dt_txt;
   weatherIcon.setAttribute(
     'src',
     `https://openweathermap.org/img/w/${icon}.png`
   );
-  weatherIcon.setAttribute('alt', iconDescription);
-  tempEl.textContent = `Temp: ${tempF} °F`;
-  windEl.textContent = `Wind: ${windSpeed} MPH`;
+  tempEl.textContent = `Temp: ${temp} °F`;
+  windEl.textContent = `Wind: ${wind_speed} MPH`;
   humidityEl.textContent = `Humidity: ${humidity} %`;
 
   if (forecastContainer) {

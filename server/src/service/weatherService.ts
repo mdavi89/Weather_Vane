@@ -63,13 +63,12 @@ class WeatherService {
   }
   // TODO: Create buildGeocodeQuery method
   private buildGeocodeQuery(): string {
-    const query = `${this.baseURL}/geo/1.0/direct?q=${this.cityName}&limit=1&units=imperial&appid=${this.apiKey}`
-    console.log(query);
+    const query = `${this.baseURL}/geo/1.0/direct?q=${this.cityName}&limit=1&appid=${this.apiKey}`
     return query;
   }
   // TODO: Create buildWeatherQuery method
   private buildWeatherQuery(coordinates: Coordinates): string {
-    const query = `${this.baseURL}/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&limit=5&appid=${this.apiKey}`;
+    const query = `${this.baseURL}/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&limit=5&units=imperial&appid=${this.apiKey}`;
     return query;
   }
   // TODO: Create fetchAndDestructureLocationData method

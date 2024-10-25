@@ -5,22 +5,24 @@ import HistoryService from '../../service/historyService.js';
 import WeatherService from '../../service/weatherService.js';
 
 // TODO: POST Request with city name to retrieve weather data
-router.post('/', (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
   // TODO: GET weather data from city name
   const cityName = req.body.cityName;
-  if (!cityName){
+  if (!cityName) {
     return res.status(400).json({ error: 'City name is required' });
   }
-
-  const weatherData = WeatherService.getWeatherForCity(cityName);
-  // TODO: save city to search history
-  HistoryService.addCity(cityName);
-  return res.status(200).json(weatherData);
+  try {
+    HistoryService.addCity(cityName);
+    const newWeather = await WeatherService.getWeatherForCity(cityName);
+    return res.status(200).json(newWeather);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: 'Failed to retrieve weather data' });
+  }
 });
 
 // TODO: GET search history
-router.get('/history', async (req: Request, res: Response) => {
-  if (!req)
+router.get('/history', async (_req: Request, res: Response) => {
   try {
     const savedCities = await HistoryService.getCities();
     res.json(savedCities);
