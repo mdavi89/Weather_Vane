@@ -18,13 +18,15 @@ class Weather {
   humidity: number;
   icon: string;
   dt_txt: string;
+  city: string;
 
-  constructor(temp: number, wind_speed: number,  humidity: number, icon: string, dt_txt: string) {
+  constructor(temp: number, wind_speed: number,  humidity: number, icon: string, dt_txt: string, city: string) {
     this.temp = temp;
     this.wind_speed = wind_speed;
     this.humidity = humidity;
     this.icon = icon;
     this.dt_txt = dt_txt;
+    this.city = city;
 
   }
 
@@ -91,11 +93,12 @@ class WeatherService {
   // TODO: Build parseCurrentWeather method
   private parseCurrentWeather(response: any) {
     let currentWeather = new Weather (
-      response.main.temp, 
-      response.wind.speed, 
-      response.main.humidity,
-      response.weather[0].icon, 
-      response.dt_txt);
+      response.list[0].main.temp, 
+      response.list[0].wind.speed, 
+      response.list[0].main.humidity,
+      response.list[0].weather[0].icon, 
+      response.list[0].dt_txt, 
+      this.cityName);
     return currentWeather;
   }
   // TODO: Complete buildForecastArray method
@@ -107,7 +110,8 @@ class WeatherService {
           wind_speed: data.wind.speed, 
           humidity: data.main.humidity,
           icon: data.weather[0].icon, 
-          dt_txt: data.dt_txt
+          dt_txt: data.dt_txt,
+          city: this.cityName
         };
         forecastArray.push(forecast);
       }
@@ -123,7 +127,7 @@ class WeatherService {
     try {
       let coordinates = await this.fetchAndDestructureLocationData();
       let response = await this.fetchWeatherData(coordinates);
-      let currentWeather = this.parseCurrentWeather(response.list[0]);
+      let currentWeather = this.parseCurrentWeather(response);
       let weatherData = response.list;
       let forecast = this.buildForecastArray(currentWeather, weatherData);
       return forecast;

@@ -35,6 +35,7 @@ API Calls
 
 */
 
+
 const fetchWeather = async (cityName: string) => {
   const response = await fetch('/api/weather/', {
     method: 'POST',
@@ -77,12 +78,11 @@ Render Functions
 */
 
 const renderCurrentWeather = (currentWeather: any): void => {
-  console.log(currentWeather);
-  const { temp, wind_speed, humidity, icon, dt_txt } =
+  const { temp, wind_speed, humidity, icon, dt_txt, city } =
     currentWeather;
 
   // convert the following to typescript
-  heading.textContent = `(${dt_txt})`;
+  heading.textContent = `${city} (${dt_txt.replace(' 00:00:00', '')})`;
   weatherIcon.setAttribute(
     'src',
     `https://openweathermap.org/img/w/${icon}.png`
@@ -119,13 +119,13 @@ const renderForecast = (forecast: any): void => {
 };
 
 const renderForecastCard = (forecast: any) => {
-  const { temp, wind_speed, humidity, icon, dt_txt } = forecast;
+  const { temp, wind_speed, humidity, icon, dt_txt, city } = forecast;
 
   const { col, cardTitle, weatherIcon, tempEl, windEl, humidityEl } =
     createForecastCard();
 
   // Add content to elements
-  cardTitle.textContent = dt_txt;
+  cardTitle.textContent = `${dt_txt.replace(' 00:00:00', '')}`;
   weatherIcon.setAttribute(
     'src',
     `https://openweathermap.org/img/w/${icon}.png`
