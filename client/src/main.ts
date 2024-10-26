@@ -119,7 +119,7 @@ const renderForecast = (forecast: any): void => {
 };
 
 const renderForecastCard = (forecast: any) => {
-  const { temp, wind_speed, humidity, icon, dt_txt, city } = forecast;
+  const { temp, wind_speed, humidity, icon, dt_txt } = forecast;
 
   const { col, cardTitle, weatherIcon, tempEl, windEl, humidityEl } =
     createForecastCard();
